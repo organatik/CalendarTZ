@@ -20,9 +20,14 @@ td {
   height: 100px;
   vertical-align: baseline;
   padding: 5px;
+  max-width: 100px;
+
 }
 td p span {
   display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 td p span:nth-child(2) {
   font-weight: bold;

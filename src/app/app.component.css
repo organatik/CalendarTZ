@@ -1,0 +1,35 @@
+p {
+  margin: 0;
+  padding: 0;
+}
+.control-month {
+  margin: 15px 0;
+}
+.control-month button {
+  margin: 5px;
+}
+table {
+  width: 100%;
+  max-width: 1900px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  border-color: lightblue
+}
+td {
+  width: 100px;
+  height: 100px;
+  vertical-align: baseline;
+  padding: 5px;
+}
+td p span {
+  display: block;
+}
+td p span:nth-child(2) {
+  font-weight: bold;
+}
+.selected {
+  background-color:  lightblue!important;
+}
+.to-day{
+  background-color: gray;
+}

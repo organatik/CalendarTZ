@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Event  {{ data.days  }} {{ data.curMonth | dfnsFormat: 'MMMM YYYY'  }}</h1>
+<div mat-dialog-content>
+  <p>Событие</p>
+  <input matInput [(ngModel)]="data.title">
+  <p>Описание</p>
+  <textarea matInput [(ngModel)]="data.description"></textarea>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="{title: data.title, description: data.description, day: data.days}" cdkFocusInitial>Ok</button>
+</div>

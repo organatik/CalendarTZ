@@ -1,20 +1,37 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="wrapper">
+  <span matTooltip="Select date to add EVENT">
+      <button mat-raised-button [disabled]='!selectedDay'   (click)="openDialog(selectedDay[0])">Add Event</button>
+  </span>
+  <p class='control-month'>
+    <button mat-stroked-button color="primary" (click)="previousMonth()"><</button>
+    {{ startDate | dfnsFormat: 'MMMM YYYY' }}
+    <button mat-stroked-button color="primary" (click)="nextMonth()">></button>
+    <button  mat-raised-button  (click)="getToDayDate()">Today</button>
+  </p>
+  <table border="1">
+    <tr>
+      <th>Понедельник</th>
+      <th>Вторник</th>
+      <th>Среда</th>
+      <th>Четверг</th>
+      <th>Пятница</th>
+      <th>Суббота</th>
+      <th>Воскресенье</th>
+    </tr>
+    <tr *ngFor="let week of updateCalendar | async; let i = index">
+      <td *ngFor="let days of week; let n = index" (click)="selectDay(n, days)" [ngClass]="{'selected': days === selectedDay, 'to-day': days[0].day === toDayDate}">
+        <p *ngFor="let day of days">
+          <span>
+            {{ day.day}}
+          </span>
+          <span>
+            {{ day.title}}
+          </span>
+          <span>
+            {{ day.description}}
+          </span>
+        </p>
+      </td>
+    </tr>
+  </table>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-

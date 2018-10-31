@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { getYear, getMonth, startOfWeek, addDays, subMonths, addMonths, getDate } from 'date-fns';
+import { DialogComponent } from './dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +10,92 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'calendar';
+  year = getYear(new Date());
+  month = getMonth(new Date());
+  startDate;
+  curDate;
+  listOfDate;
+  toDayDate;
+  updateCalendar;
+  selectedDay = null;
+  event: { title: string; description: string; day: number };
+
+  constructor(public dialog: MatDialog) {
+    this.startDate = new Date(this.year, this.month);
+    this.curDate = startOfWeek(this.startDate, { weekStartsOn: 1 });
+    this.listOfDate = this.matrix();
+    this.updateCalendar = new BehaviorSubject(this.matrix());
+    this.toDayDate = getDate(new Date());
+  }
+
+  selectDay(index, days) {
+    this.selectedDay = days;
+    console.log(days);
+  }
+  getToDayDate() {
+    this.startDate = new Date(this.year, this.month);
+    this.curDate = startOfWeek(this.startDate, { weekStartsOn: 1 });
+    this.listOfDate = this.matrix();
+    this.toDayDate = getDate(new Date());
+    this.updateCalendar.next([...this.listOfDate]);
+  }
+  addInfo(selected, eventInfo) {
+    selected[0] = eventInfo;
+  }
+  previousMonth() {
+    this.startDate = subMonths(this.startDate, 1);
+    this.curDate = startOfWeek(this.startDate, { weekStartsOn: 1 });
+    // console.log(this.matrix());
+    this.listOfDate = this.matrix();
+    this.updateCalendar.next([...this.listOfDate]);
+    this.toDayDate = 0;
+  }
+  nextMonth() {
+    this.startDate = addMonths(this.startDate, 1);
+    this.curDate = startOfWeek(this.startDate, { weekStartsOn: 1 });
+    // console.log(this.matrix());
+    this.listOfDate = this.matrix();
+    this.updateCalendar.next([...this.listOfDate]);
+    this.toDayDate = 0;
+  }
+
+  openDialog( infoDays): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+      data: { days: infoDays.day, curMonth: this.startDate }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.event = result;
+        this.addInfo( this.selectedDay, {
+          title: this.event.title,
+          description: this.event.description,
+          day: this.event.day
+        });
+
+      }
+    });
+  }
+
+  matrix() {
+    const startDate = this.curDate;
+    const rows = 5;
+    const cols = 7;
+    const length = rows * cols;
+
+    const dateArr = Array.from({ length })
+      // create a list of dates
+      .map((_, index) => {
+        return [{ day: addDays(startDate, index).getDate() }];
+      })
+      // fold the array into a matrix
+      .reduce(
+        (matrix, current, index, days) =>
+          !(index % cols !== 0) ? [...matrix, days.slice(index, index + cols)] : matrix,
+        []
+      );
+    return dateArr;
+  }
 }

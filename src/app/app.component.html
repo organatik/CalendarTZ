@@ -19,7 +19,7 @@
       <th>Воскресенье</th>
     </tr>
     <tr *ngFor="let week of updateCalendar | async; let i = index">
-      <td *ngFor="let days of week; let n = index" (click)="selectDay(n, days)" [ngClass]="{'selected': days === selectedDay, 'to-day': days[0].day === toDayDate}">
+      <td *ngFor="let days of week; let n = index" (click)="selectDay(n, days, week)" [ngClass]="{'selected': days === selectedDay, 'to-day': days[0].day === toDayDate &&  week.indexOf(days) === (toDayIso - 1)}">
         <p *ngFor="let day of days">
           <span>
             {{ day.day}}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { getYear, getMonth, startOfWeek, addDays, subMonths, addMonths, getDate } from 'date-fns';
+import { getYear, getMonth, startOfWeek, addDays, subMonths, addMonths, getDate, getISODay } from 'date-fns';
 import { DialogComponent } from './dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
@@ -16,8 +16,10 @@ export class AppComponent {
   curDate;
   listOfDate;
   toDayDate;
+  toDayIso;
   updateCalendar;
   selectedDay = null;
+  dayIndex;
   event: { title: string; description: string; day: number };
 
   constructor(public dialog: MatDialog) {
@@ -26,11 +28,14 @@ export class AppComponent {
     this.listOfDate = this.matrix();
     this.updateCalendar = new BehaviorSubject(this.matrix());
     this.toDayDate = getDate(new Date());
+    this.toDayIso = getISODay(new Date());
+    console.log(this.toDayIso);
   }
 
-  selectDay(index, days) {
+  selectDay(index, days, week) {
     this.selectedDay = days;
     console.log(days);
+    console.log(week);
   }
   getToDayDate() {
     this.startDate = new Date(this.year, this.month);
@@ -57,6 +62,9 @@ export class AppComponent {
     this.listOfDate = this.matrix();
     this.updateCalendar.next([...this.listOfDate]);
     this.toDayDate = 0;
+  }
+  getIndex(week ,day) {
+     this.dayIndex = indexOf(day)
   }
 
   openDialog( infoDays): void {
